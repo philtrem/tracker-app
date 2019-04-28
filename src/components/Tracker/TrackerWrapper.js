@@ -3,7 +3,7 @@ import styled from "styled-components"
 const TrackerWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   background: white;
   border: 1px solid #3d3d3d;

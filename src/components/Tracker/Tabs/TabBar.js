@@ -2,6 +2,8 @@ import styled from "styled-components"
 import React, {useRef, useEffect} from 'react'
 import StyledTab from './Tab'
 
+// TODO: FIX PROBLEM: NO FOCUSED TAB AFTER CLOSING ALL TABS
+
 const StyledTabBar = styled(TabBar)`
   background: #cdcdcd;
   border-radius: 0.5rem 0.5rem 0 0;
