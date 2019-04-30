@@ -1,11 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import StyledRow from './Row'
+import StyledResizeHandle from './ResizeHandle'
 
 const StyledColumn = styled(Column)`
+  display: flex;
   width: ${props => props.width};
+  .content-wrapper {
+    display:block;
+  } 
   .label-wrapper {
-    position: sticky;
+    position: relative;
     display: flex;
     background: #f4f4f4;
     border: 1px solid #828282;
@@ -18,47 +23,32 @@ const StyledColumn = styled(Column)`
     height: 1.7rem;
     width: 100%;
   }
-  .separator-resize-handle {
-  position: absolute;
-  background: ${props => props.isLastColumn ? "white" : "#f4f4f4"};
-  border-left: 1px solid #828282;
-  width: 4px;
-  height: 1.7rem;
-  margin-left: calc(${props => props.width} - ${props => props.isFirstColumn ? "2px" : "1px"});
-    &:hover {
-      border-left: 7px solid #3c88ff;
-      margin-left: calc(${props => props.width} - ${props => props.isFirstColumn ? "8px" : "7px"});
-      cursor: ew-resize;
-    } 
-  }
-  .resize-handle-toggled {
-    position: fixed;
-    border-right: 1px solid #3c88ff;
-    height: 100%;
-    margin-left: calc(${props => props.width} - 0.25rem);
-    // margin-left: calc(${props => props.width} - 0.25rem + ${props => props.offsetX}px);
-    }
 `
 
 
 function Column({className, id, label, rows, isFirstColumn, isLastColumn, resizeHandler, isToggledResize}) {
   return (
-    <div className={className}
-    >
-      <div className="label-wrapper">
-        <div className="label">
-          {label}
+    <div className={className}>
+      <div className="content-wrapper">
+        <div className="label-wrapper">
+          <div className="label">
+            {label}
+          </div>
+          <StyledResizeHandle id={id} width columnLength={rows.length} offsetX
+                              isLastColumn={isLastColumn} isToggledResize={isToggledResize}
+                              resizeHandler={resizeHandler}
+          />
         </div>
-        <div className="separator-resize-handle"
-             onMouseDown={() => resizeHandler(id, true)}
-        > </div>
-        <div className={`${isToggledResize ? "resize-handle-toggled": ""}`}>
+        <div className="rows-wrapper">
+          { rows.map((row, i) => (
+            <StyledRow key={`${id}${i}`} content={row.content}
+                       isFirstColumn={isFirstColumn} isLastColumn={isLastColumn}
+            />
+          ))}
         </div>
       </div>
-      <div className="rows-wrapper">
-        { rows.map((row, i) => <StyledRow key={`${id}${i}`} content={row.content} isFirstColumn={isFirstColumn} isLastColumn={isLastColumn}/>) }
       </div>
-    </div>
+
   )
 }
 
