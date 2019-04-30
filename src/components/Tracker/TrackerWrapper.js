@@ -12,7 +12,7 @@ const TrackerWrapper = styled.div`
   margin: 1rem auto;
   padding-bottom: 0.5rem;
   width: 75rem;
-  height: 90vh; // TODO: REMOVE !!! temporary***
+  height: 45rem;
 `
 
 export default TrackerWrapper
