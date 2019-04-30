@@ -2,11 +2,17 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 
 const StyledRow = styled(Row)`
-  box-sizing: border-box;
-  font-size: 1em;
-  height: 1.7rem;
-  padding: 0 0.1rem;
-  width: 100%;
+    box-sizing: border-box;
+    font-size: 1em;
+    padding: 0 0.2rem;
+    height: 1.7rem;
+    width: 100%;
+    border: 1px solid #dcdcdc;
+    ${props => !props.isFirstColumn && "border-left: none;"};
+    border-top: none;
+    &:focus {
+      border: 0.1rem solid #3c88ff;
+    }
 `
 
 function Row({className, content}) {
@@ -19,8 +25,6 @@ function Row({className, content}) {
            value={value}
            onChange={onChangeHandler}
     />
-
-
   )
 }
 
