@@ -5,19 +5,23 @@ import StyledResizeHandle from './ResizeHandle'
 
 const StyledColumn = styled(Column)`
   display: flex;
-  width: ${props => props.width};
+  width: ${props => props.width}px;
   .content-wrapper {
     display:block;
-  } 
+    width: ${props => props.width}px;
+  }
   .label-wrapper {
-    position: relative;
+    width: ${props => props.width}px;
+    position: absolute;
     display: flex;
     background: #f4f4f4;
     border: 1px solid #828282;
-    border-right: none;
+    box-sizing: border-box;
     ${props => !props.isFirstColumn && "border-left: none"};
   }
   .label {
+    width: ${props => props.width}px;
+    overflow: hidden;
     color: #282828;
     font-size: 1.2rem;
     height: 1.7rem;
@@ -25,8 +29,14 @@ const StyledColumn = styled(Column)`
   }
 `
 
-
-function Column({className, id, label, rows, isFirstColumn, isLastColumn, resizeHandler, isToggledResize}) {
+function Column({className, id, label, width, rows, isFirstColumn, isLastColumn, setColumnWidth}) {
+  const [isToggledResize, setIsToggledResize] = useState(false)
+  const [isToggledId, setIsToggledId] = useState(0)
+  const resizeHandler = (id, bool) => {
+    setIsToggledId(id)
+    setIsToggledResize(bool)
+  }
+  const [offsetX, setOffsetX] = useState(0)
   return (
     <div className={className}>
       <div className="content-wrapper">
@@ -34,9 +44,11 @@ function Column({className, id, label, rows, isFirstColumn, isLastColumn, resize
           <div className="label">
             {label}
           </div>
-          <StyledResizeHandle id={id} width columnLength={rows.length} offsetX
-                              isLastColumn={isLastColumn} isToggledResize={isToggledResize}
-                              resizeHandler={resizeHandler}
+          <StyledResizeHandle id={id} width={width} columnLength={rows.length} offsetX={offsetX}
+                              isFirstColumn={isFirstColumn} isLastColumn={isLastColumn}
+                              isToggledResize={isToggledResize}
+                              resizeHandler={resizeHandler} setOffsetX={setOffsetX}
+                              setColumnWidth={setColumnWidth}
           />
         </div>
         <div className="rows-wrapper">
@@ -47,7 +59,7 @@ function Column({className, id, label, rows, isFirstColumn, isLastColumn, resize
           ))}
         </div>
       </div>
-      </div>
+    </div>
 
   )
 }

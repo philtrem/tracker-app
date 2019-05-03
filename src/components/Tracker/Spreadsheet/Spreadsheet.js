@@ -37,10 +37,24 @@ const getMaxColumnLength = columns => {
 const newId = () => Math.floor(Math.random() * 10**10)
 function Spreadsheet({className}) {
   const [columns, setColumns] = useState([])
+  const setColumnWidth = (id, newWidth) => {
+    const minWidth = 7
+    if (newWidth < minWidth) {
+      newWidth = minWidth
+    }
+    setColumns(
+      columns.map(column => {
+        if (id === column.id) {
+          column.width = newWidth
+        }
+        return column
+      })
+    )
+  }
   const [maxColumnLength, setMaxColumnLength] = useState(getMaxColumnLength(columns))
   const newColumn = () => {
     const defaultLength = 20
-    const defaultWidth = "10rem"
+    const defaultWidth = 200
     const column = {
       id: newId(),
       label: "untitled",
@@ -61,9 +75,7 @@ function Spreadsheet({className}) {
     setIsToggledResize(bool)
   }
   return (
-    <div className={className}
-         onMouseUp={() => resizeHandler(0, false)}
-    >
+    <div className={className}>
       <div className="column-wrapper">
         { columns.map((column, i) => (
           <StyledColumn key={column.id} id={column.id} label={column.label}
@@ -71,6 +83,7 @@ function Spreadsheet({className}) {
                         isFirstColumn={i === 0} isLastColumn={i === columns.length-1}
                         resizeHandler={resizeHandler}
                         isToggledResize={column.id === isToggledId && isToggledResize}
+                        setColumnWidth={setColumnWidth}
           />
         )) }
       </div>
